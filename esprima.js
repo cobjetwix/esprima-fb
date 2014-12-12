@@ -74,6 +74,9 @@ parseYieldExpression: true, parseAwaitExpression: true
         FnExprTokens,
         Syntax,
         PropertyKind,
+        MethodVisibility,
+        ClassQualifiers,
+        PropertyQualifier,
         Messages,
         Regex,
         SyntaxTreeDelegate,
@@ -246,9 +249,29 @@ parseYieldExpression: true, parseAwaitExpression: true
         Set: 4
     };
 
+    ClassQualifiers = {
+        'class': 'class',
+        'comp': 'comp',
+        'pagecomp': 'pagecomp',
+        'app': 'app',
+        'site': 'site',
+        'type': 'type'
+    };
+
     ClassPropertyType = {
         'static': 'static',
         prototype: 'prototype'
+    };
+
+    MethodVisibility = {
+        'public' : 'public',
+        'protected' : 'protected',
+        'private' : 'private'
+    };
+
+    PropertyQualifier = {
+        'prop': 'prop',
+        'state': 'state'
     };
 
     // Error messages should be identical to V8.
@@ -429,6 +452,10 @@ parseYieldExpression: true, parseAwaitExpression: true
         // 'yield' is only treated as a keyword in strict mode.
         // 'let' is for compatiblity with SpiderMonkey and ES.next.
         // Some others are from future reserved words.
+
+        if(id in ClassQualifiers) {
+            return true;
+        }
 
         switch (id.length) {
         case 2:
@@ -5386,8 +5413,6 @@ parseYieldExpression: true, parseAwaitExpression: true
                 return parseForStatement();
             case 'function':
                 return parseFunctionDeclaration();
-            case 'class':
-                return parseClassDeclaration();
             case 'if':
                 return parseIfStatement();
             case 'return':
@@ -5405,6 +5430,9 @@ parseYieldExpression: true, parseAwaitExpression: true
             case 'with':
                 return parseWithStatement();
             default:
+                if(lookahead.value in ClassQualifiers) {
+                    return parseClassDeclaration();
+                }
                 break;
             }
         }
@@ -5860,7 +5888,7 @@ parseYieldExpression: true, parseAwaitExpression: true
                     existingPropNames[propType][key.name].get === undefined
                     // There isn't already a data prop by this name
                     && existingPropNames[propType][key.name].data === undefined
-                    // The only existing prop by this name is a setter
+                    // The only existing prop by this name is a §
                     && existingPropNames[propType][key.name].set !== undefined;
                 if (!isValidDuplicateProp) {
                     throwError(key, Messages.IllegalDuplicateClassProperty);
@@ -5922,6 +5950,27 @@ parseYieldExpression: true, parseAwaitExpression: true
                 })
             );
         }
+        if(tokenValue in MethodVisibility && !match('(')) {
+            key = parseObjectPropertyKey();
+            expect('(');
+            token = lookahead;
+            param = [ parseTypeAnnotatableIdentifier() ];
+            expect(')');
+            if (match(':')) {
+                returnType = parseTypeAnnotation();
+            }
+            return delegate.createMethodDefinition(
+                propType,
+                tokenValue,
+                key,
+                parsePropertyFunction({
+                    params: param,
+                    generator: false,
+                    name: token,
+                    returnType: returnType
+                })
+            );
+        }
 
         if (match('<')) {
             typeParameters = parseTypeParameterDeclaration();
@@ -5967,6 +6016,13 @@ parseYieldExpression: true, parseAwaitExpression: true
         );
     }
 
+    function parseQualifiedProperty(qualifier) {
+        var expr = parseVariableDeclaration(qualifier);
+        expr.type = "ClassProperty";
+        expr.id.qualifier = qualifier;
+        return expr;
+    }
+
     function parseClassElement(existingProps) {
         var computed, generator = false, key, marker = markerCreate(),
             isStatic = false;
@@ -5983,6 +6039,12 @@ parseYieldExpression: true, parseAwaitExpression: true
         if (match('*')) {
             lex();
             generator = true;
+        }
+
+        if(!generator && lookahead.value in PropertyQualifier) {
+            var qualifier = lookahead.value;
+            lex();
+            return parseQualifiedProperty(qualifier);
         }
 
         computed = (lookahead.value === '[');
@@ -6091,9 +6153,13 @@ parseYieldExpression: true, parseAwaitExpression: true
         var id, implemented, previousYieldAllowed, superClass = null,
             superTypeParameters, marker = markerCreate(), typeParameters;
 
-        expectKeyword('class');
+        var qualifier = lookahead.value;
+        // TODO: create something like expectOneOfKeywords()
+        //expectKeyword('class');
+        lex();
 
         id = parseVariableIdentifier();
+        id.qualifier = qualifier;
 
         if (match('<')) {
             typeParameters = parseTypeParameterDeclaration();
