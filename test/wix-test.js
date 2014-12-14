@@ -138,22 +138,23 @@ var wixTestFixtures = {
                                 }
                             }
                         },
-                        "kind": "public",
+                        "kind": "",
                         "static": false,
                         "range": [
-                            11,
+                            18,
                             41
                         ],
                         "loc": {
                             "start": {
                                 "line": 1,
-                                "column": 11
+                                "column": 18
                             },
                             "end": {
                                 "line": 1,
                                 "column": 41
                             }
-                        }
+                        },
+                        "qualifier": "public"
                     }
                 ],
                 "range": [
@@ -324,22 +325,23 @@ var wixTestFixtures = {
                                 }
                             }
                         },
-                        "kind": "private",
+                        "kind": "",
                         "static": false,
                         "range": [
-                            11,
+                            19,
                             42
                         ],
                         "loc": {
                             "start": {
                                 "line": 1,
-                                "column": 11
+                                "column": 19
                             },
                             "end": {
                                 "line": 1,
                                 "column": 42
                             }
-                        }
+                        },
+                        "qualifier": "private"
                     }
                 ],
                 "range": [
@@ -448,8 +450,7 @@ var wixTestFixtures = {
                                     "line": 1,
                                     "column": 28
                                 }
-                            },
-                            "qualifier": "prop"
+                            }
                         },
                         "init": null,
                         "range": [
@@ -465,7 +466,8 @@ var wixTestFixtures = {
                                 "line": 1,
                                 "column": 28
                             }
-                        }
+                        },
+                        "qualifier": "prop"
                     }
                 ],
                 "range": [
@@ -498,7 +500,8 @@ var wixTestFixtures = {
                 }
             }
         },
-        'class Foo {prop prop1:string = "Bad Monkey"}': {
+
+        'class Foo { prop prop1:string = "Bad Monkey"}': {
             "type": "ClassDeclaration",
             "id": {
                 "type": "Identifier",
@@ -532,89 +535,89 @@ var wixTestFixtures = {
                                 "typeAnnotation": {
                                     "type": "StringTypeAnnotation",
                                     "range": [
-                                        22,
-                                        28
+                                        23,
+                                        29
                                     ],
                                     "loc": {
                                         "start": {
                                             "line": 1,
-                                            "column": 22
+                                            "column": 23
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 28
+                                            "column": 29
                                         }
                                     }
                                 },
                                 "range": [
-                                    21,
-                                    28
+                                    22,
+                                    29
                                 ],
                                 "loc": {
                                     "start": {
                                         "line": 1,
-                                        "column": 21
+                                        "column": 22
                                     },
                                     "end": {
                                         "line": 1,
-                                        "column": 28
+                                        "column": 29
                                     }
                                 }
                             },
                             "range": [
-                                16,
-                                28
+                                17,
+                                29
                             ],
                             "loc": {
                                 "start": {
                                     "line": 1,
-                                    "column": 16
+                                    "column": 17
                                 },
                                 "end": {
                                     "line": 1,
-                                    "column": 28
+                                    "column": 29
                                 }
-                            },
-                            "qualifier": "prop"
+                            }
                         },
                         "init": {
                             "type": "Literal",
                             "value": "Bad Monkey",
                             "raw": "\"Bad Monkey\"",
                             "range": [
-                                31,
-                                43
+                                32,
+                                44
                             ],
                             "loc": {
                                 "start": {
                                     "line": 1,
-                                    "column": 31
+                                    "column": 32
                                 },
                                 "end": {
                                     "line": 1,
-                                    "column": 43
+                                    "column": 44
                                 }
                             }
                         },
                         "range": [
-                            16,
-                            43
+                            17,
+                            44
                         ],
                         "loc": {
                             "start": {
                                 "line": 1,
-                                "column": 16
+                                "column": 17
                             },
                             "end": {
                                 "line": 1,
-                                "column": 43
+                                "column": 44
                             }
-                        }
+                        },
+                        "qualifier": "prop"
                     }
                 ],
                 "range": [
                     10,
-                    44
+                    45
                 ],
                 "loc": {
                     "start": {
@@ -623,13 +626,13 @@ var wixTestFixtures = {
                     },
                     "end": {
                         "line": 1,
-                        "column": 44
+                        "column": 45
                     }
                 }
             },
             "range": [
                 0,
-                44
+                45
             ],
             "loc": {
                 "start": {
@@ -638,10 +641,12 @@ var wixTestFixtures = {
                 },
                 "end": {
                     "line": 1,
-                    "column": 44
+                    "column": 45
                 }
             }
         },
+
+
         'comp Foo {prop prop1:string;}': {
             "type": "ClassDeclaration",
             "id": {
@@ -720,7 +725,6 @@ var wixTestFixtures = {
                                     "column": 27
                                 }
                             },
-                            "qualifier": "prop"
                         },
                         "init": null,
                         "range": [
@@ -736,7 +740,8 @@ var wixTestFixtures = {
                                 "line": 1,
                                 "column": 27
                             }
-                        }
+                        },
+                        "qualifier": "prop"
                     }
                 ],
                 "range": [
@@ -895,7 +900,182 @@ var wixTestFixtures = {
                     "column": 24
                 }
             }
-        }    }
+        },
+
+
+
+        "class Home {public onRender(param1, param2) {} }": {
+            "type": "ClassDeclaration",
+            "id": {
+                "type": "Identifier",
+                "name": "Home",
+                "range": [
+                    6,
+                    10
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 6
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 10
+                    }
+                }
+            },
+            "superClass": null,
+            "body": {
+                "type": "ClassBody",
+                "body": [
+                    {
+                        "type": "MethodDefinition",
+                        "key": {
+                            "type": "Identifier",
+                            "name": "onRender",
+                            "range": [
+                                19,
+                                27
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 19
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 27
+                                }
+                            }
+                        },
+                        "value": {
+                            "type": "FunctionExpression",
+                            "id": null,
+                            "params": [
+                                {
+                                    "type": "Identifier",
+                                    "name": "param1",
+                                    "range": [
+                                        28,
+                                        34
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 28
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 34
+                                        }
+                                    }
+                                },
+                                {
+                                    "type": "Identifier",
+                                    "name": "param2",
+                                    "range": [
+                                        36,
+                                        42
+                                    ],
+                                    "loc": {
+                                        "start": {
+                                            "line": 1,
+                                            "column": 36
+                                        },
+                                        "end": {
+                                            "line": 1,
+                                            "column": 42
+                                        }
+                                    }
+                                }
+                            ],
+                            "defaults": [],
+                            "body": {
+                                "type": "BlockStatement",
+                                "body": [],
+                                "range": [
+                                    44,
+                                    46
+                                ],
+                                "loc": {
+                                    "start": {
+                                        "line": 1,
+                                        "column": 44
+                                    },
+                                    "end": {
+                                        "line": 1,
+                                        "column": 46
+                                    }
+                                }
+                            },
+                            "rest": null,
+                            "generator": false,
+                            "expression": false,
+                            "range": [
+                                44,
+                                46
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 44
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 46
+                                }
+                            }
+                        },
+                        "kind": "",
+                        "static": false,
+                        "range": [
+                            19,
+                            46
+                        ],
+                        "loc": {
+                            "start": {
+                                "line": 1,
+                                "column": 19
+                            },
+                            "end": {
+                                "line": 1,
+                                "column": 46
+                            }
+                        },
+                        "qualifier": "public"
+                    }
+                ],
+                "range": [
+                    11,
+                    48
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 11
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 48
+                    }
+                }
+            },
+            "range": [
+                0,
+                48
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 48
+                }
+            }
+        }
+    }
 };
 
 

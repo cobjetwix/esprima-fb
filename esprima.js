@@ -453,7 +453,7 @@ parseYieldExpression: true, parseAwaitExpression: true
         // 'let' is for compatiblity with SpiderMonkey and ES.next.
         // Some others are from future reserved words.
 
-        if(ClassQualifiers.hasOwnProperty(id) || PropertyQualifier.hasOwnProperty(id)) {
+        if(ClassQualifiers.hasOwnProperty(id)) {
             return true;
         }
 
@@ -5430,7 +5430,7 @@ parseYieldExpression: true, parseAwaitExpression: true
             case 'with':
                 return parseWithStatement();
             default:
-                if(lookahead.value in ClassQualifiers) {
+                if(ClassQualifiers.hasOwnProperty(lookahead.value)) {
                     return parseClassDeclaration();
                 }
                 break;
@@ -5950,27 +5950,7 @@ parseYieldExpression: true, parseAwaitExpression: true
                 })
             );
         }
-        if(tokenValue in MethodVisibility && !match('(')) {
-            key = parseObjectPropertyKey();
-            expect('(');
-            token = lookahead;
-            param = [ parseTypeAnnotatableIdentifier() ];
-            expect(')');
-            if (match(':')) {
-                returnType = parseTypeAnnotation();
-            }
-            return delegate.createMethodDefinition(
-                propType,
-                tokenValue,
-                key,
-                parsePropertyFunction({
-                    params: param,
-                    generator: false,
-                    name: token,
-                    returnType: returnType
-                })
-            );
-        }
+
 
         if (match('<')) {
             typeParameters = parseTypeParameterDeclaration();
@@ -6016,16 +5996,19 @@ parseYieldExpression: true, parseAwaitExpression: true
         );
     }
 
-    function parseQualifiedProperty(qualifier) {
-        var expr = parseVariableDeclaration(qualifier);
-        expr.type = "ClassProperty";
-        expr.id.qualifier = qualifier;
-        return expr;
+    function parseClassMemberQualifier() {
+        var potentialQualifier = lookahead.value;
+        var qualifier = (PropertyQualifier.hasOwnProperty(potentialQualifier) && PropertyQualifier[potentialQualifier]) ||
+            (MethodVisibility.hasOwnProperty(potentialQualifier) && MethodVisibility[potentialQualifier])
+        if(qualifier) {
+            lex();
+            return qualifier;
+        }
     }
 
-    function parseClassElement(existingProps) {
+    function parseClassElement(existingProps, qualifier) {
         var computed, generator = false, key, marker = markerCreate(),
-            isStatic = false;
+            isStatic = false, accessModifier;
         if (match(';')) {
             lex();
             return;
@@ -6041,12 +6024,8 @@ parseYieldExpression: true, parseAwaitExpression: true
             generator = true;
         }
 
-        if(!generator && lookahead.value in PropertyQualifier) {
-            var qualifier = lookahead.value;
-            if(PropertyQualifier.hasOwnProperty(qualifier)) {
-                lex();
-                return parseQualifiedProperty(qualifier);
-            }
+        if(qualifier && PropertyQualifier.hasOwnProperty(qualifier)) {
+            return parseQualifiedProperty();
         }
 
         computed = (lookahead.value === '[');
@@ -6065,6 +6044,13 @@ parseYieldExpression: true, parseAwaitExpression: true
         ));
     }
 
+    function parseQualifiedProperty(qualifier) {
+        var expr = parseVariableDeclaration();
+        expr.type = "ClassProperty";
+        expr.qualifier = qualifier;
+        return expr;
+    }
+
     function parseClassBody() {
         var classElement, classElements = [], existingProps = {}, marker = markerCreate();
 
@@ -6077,7 +6063,12 @@ parseYieldExpression: true, parseAwaitExpression: true
             if (match('}')) {
                 break;
             }
-            classElement = parseClassElement(existingProps);
+
+            var qualifier = parseClassMemberQualifier();
+            classElement = parseClassElement(existingProps, qualifier);
+            if(qualifier) {
+                classElement.qualifier = qualifier;
+            }
 
             if (typeof classElement !== 'undefined') {
                 classElements.push(classElement);
