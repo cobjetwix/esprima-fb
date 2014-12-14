@@ -6205,6 +6205,8 @@ parseYieldExpression: true, parseAwaitExpression: true
                 return parseConstLetDeclaration(lookahead.value);
             case 'function':
                 return parseFunctionDeclaration();
+            case 'enum':
+                return parseEnumTypeAlias();
             default:
                 return parseStatement();
             }
@@ -7134,6 +7136,45 @@ parseYieldExpression: true, parseAwaitExpression: true
         right = parseType();
         consumeSemicolon();
         return markerApply(marker, delegate.createTypeAlias(id, typeParameters, right));
+    }
+
+    function parseEnumTypeAlias() {
+        var id, marker = markerCreate(), right;
+        expectKeyword('enum');
+        id = parseVariableIdentifier();
+
+        right = parseEnumDeclaration();
+
+        //consumeSemicolon();
+
+        return markerApply(marker, delegate.createTypeAlias(id, null, right));
+    }
+
+    function parseEnumDeclaration() {
+        var marker = markerCreate();
+        var enumDeclaration = {
+            type: 'EnumDeclaration',
+            typeParameters: parseEnumValueEnumeration()
+        };
+        return markerApply(marker, enumDeclaration);
+    }
+
+    function parseEnumValueEnumeration() {
+        var marker = markerCreate();
+        var enumValues = [];
+        expect('{');
+        while (!match('}')) {
+            var enumValue = parseVariableIdentifier();
+            enumValues.push(enumValue);
+            if (!match('}')) {
+                expect(',');
+            }
+        }
+        expect('}');
+        return markerApply(marker, {
+            type: 'ValueEnumeration',
+            params: enumValues
+        });
     }
 
     function parseInterfaceExtends() {

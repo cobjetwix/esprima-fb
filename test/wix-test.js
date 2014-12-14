@@ -768,10 +768,134 @@ var wixTestFixtures = {
                     "column": 29
                 }
             }
-        }
+        },
 
-
-    }
+        'enum abs{up, down, left}': {
+            "type": "TypeAlias",
+            "id": {
+                "type": "Identifier",
+                "name": "abs",
+                "range": [
+                    5,
+                    8
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 5
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 8
+                    }
+                }
+            },
+            "typeParameters": null,
+            "right": {
+                "type": "EnumDeclaration",
+                "typeParameters": {
+                    "type": "ValueEnumeration",
+                    "params": [
+                        {
+                            "type": "Identifier",
+                            "name": "up",
+                            "range": [
+                                9,
+                                11
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 9
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 11
+                                }
+                            }
+                        },
+                        {
+                            "type": "Identifier",
+                            "name": "down",
+                            "range": [
+                                13,
+                                17
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 13
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 17
+                                }
+                            }
+                        },
+                        {
+                            "type": "Identifier",
+                            "name": "left",
+                            "range": [
+                                19,
+                                23
+                            ],
+                            "loc": {
+                                "start": {
+                                    "line": 1,
+                                    "column": 19
+                                },
+                                "end": {
+                                    "line": 1,
+                                    "column": 23
+                                }
+                            }
+                        }
+                    ],
+                    "range": [
+                        8,
+                        24
+                    ],
+                    "loc": {
+                        "start": {
+                            "line": 1,
+                            "column": 8
+                        },
+                        "end": {
+                            "line": 1,
+                            "column": 24
+                        }
+                    }
+                },
+                "range": [
+                    8,
+                    24
+                ],
+                "loc": {
+                    "start": {
+                        "line": 1,
+                        "column": 8
+                    },
+                    "end": {
+                        "line": 1,
+                        "column": 24
+                    }
+                }
+            },
+            "range": [
+                0,
+                24
+            ],
+            "loc": {
+                "start": {
+                    "line": 1,
+                    "column": 0
+                },
+                "end": {
+                    "line": 1,
+                    "column": 24
+                }
+            }
+        }    }
 };
 
 
