@@ -362,6 +362,7 @@ if (typeof window !== 'undefined') {
         }
 
         function reportSuccess(code) {
+            return;
             var report, e;
             report = document.getElementById('report');
             e = document.createElement('pre');
