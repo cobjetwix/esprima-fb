@@ -254,8 +254,8 @@ parseYieldExpression: true, parseAwaitExpression: true
         'comp': 'comp',
         'pagecomp': 'pagecomp',
         'app': 'app',
-        'site': 'site',
-        'type': 'type'
+        'site': 'site'
+        //'type': 'type'
     };
 
     ClassPropertyType = {
@@ -453,7 +453,7 @@ parseYieldExpression: true, parseAwaitExpression: true
         // 'let' is for compatiblity with SpiderMonkey and ES.next.
         // Some others are from future reserved words.
 
-        if(id in ClassQualifiers) {
+        if(ClassQualifiers.hasOwnProperty(id) || PropertyQualifier.hasOwnProperty(id)) {
             return true;
         }
 
@@ -6043,8 +6043,10 @@ parseYieldExpression: true, parseAwaitExpression: true
 
         if(!generator && lookahead.value in PropertyQualifier) {
             var qualifier = lookahead.value;
-            lex();
-            return parseQualifiedProperty(qualifier);
+            if(PropertyQualifier.hasOwnProperty(qualifier)) {
+                lex();
+                return parseQualifiedProperty(qualifier);
+            }
         }
 
         computed = (lookahead.value === '[');
@@ -6159,7 +6161,9 @@ parseYieldExpression: true, parseAwaitExpression: true
         lex();
 
         id = parseVariableIdentifier();
-        id.qualifier = qualifier;
+        if(qualifier !== 'class') {
+            id.qualifier = qualifier;
+        }
 
         if (match('<')) {
             typeParameters = parseTypeParameterDeclaration();

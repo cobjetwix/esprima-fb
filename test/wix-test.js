@@ -1,4 +1,4 @@
-var testFixture = {
+var wixTestFixtures = {
     "Wix Tests": {
         'class Foo {public fooProp(value:number){}}': {
             "type": "ClassDeclaration",
@@ -647,21 +647,21 @@ var testFixture = {
             "id": {
                 "type": "Identifier",
                 "name": "Foo",
-                "qualifier": "comp",
                 "range": [
-                    6,
-                    9
+                    5,
+                    8
                 ],
                 "loc": {
                     "start": {
                         "line": 1,
-                        "column": 6
+                        "column": 5
                     },
                     "end": {
                         "line": 1,
-                        "column": 9
+                        "column": 8
                     }
-                }
+                },
+                "qualifier": "comp"
             },
             "superClass": null,
             "body": {
@@ -677,86 +677,86 @@ var testFixture = {
                                 "typeAnnotation": {
                                     "type": "StringTypeAnnotation",
                                     "range": [
-                                        22,
-                                        28
+                                        21,
+                                        27
                                     ],
                                     "loc": {
                                         "start": {
                                             "line": 1,
-                                            "column": 22
+                                            "column": 21
                                         },
                                         "end": {
                                             "line": 1,
-                                            "column": 28
+                                            "column": 27
                                         }
                                     }
                                 },
                                 "range": [
-                                    21,
-                                    28
+                                    20,
+                                    27
                                 ],
                                 "loc": {
                                     "start": {
                                         "line": 1,
-                                        "column": 21
+                                        "column": 20
                                     },
                                     "end": {
                                         "line": 1,
-                                        "column": 28
+                                        "column": 27
                                     }
                                 }
                             },
                             "range": [
-                                16,
-                                28
+                                15,
+                                27
                             ],
                             "loc": {
                                 "start": {
                                     "line": 1,
-                                    "column": 16
+                                    "column": 15
                                 },
                                 "end": {
                                     "line": 1,
-                                    "column": 28
+                                    "column": 27
                                 }
                             },
                             "qualifier": "prop"
                         },
                         "init": null,
                         "range": [
-                            16,
-                            28
+                            15,
+                            27
                         ],
                         "loc": {
                             "start": {
                                 "line": 1,
-                                "column": 16
+                                "column": 15
                             },
                             "end": {
                                 "line": 1,
-                                "column": 28
+                                "column": 27
                             }
                         }
                     }
                 ],
                 "range": [
-                    10,
-                    30
+                    9,
+                    29
                 ],
                 "loc": {
                     "start": {
                         "line": 1,
-                        "column": 10
+                        "column": 9
                     },
                     "end": {
                         "line": 1,
-                        "column": 30
+                        "column": 29
                     }
                 }
             },
             "range": [
                 0,
-                30
+                29
             ],
             "loc": {
                 "start": {
@@ -765,9 +765,33 @@ var testFixture = {
                 },
                 "end": {
                     "line": 1,
-                    "column": 30
+                    "column": 29
                 }
             }
-        },
+        }
+
+
     }
 };
+
+
+(function () {
+
+    'use strict';
+
+    var i, j, fixtures;
+
+    if(typeof testFixture === 'undefined') {
+        window.testFixture = {};
+    }
+    for (i in wixTestFixtures) {
+        if (wixTestFixtures.hasOwnProperty(i)) {
+            fixtures = wixTestFixtures[i];
+            if (i !== 'Syntax' && testFixture.hasOwnProperty(i)) {
+                throw new Error('FB test should not replace existing test for ' + i);
+            }
+            testFixture[i] = fixtures;
+        }
+    }
+
+}());
